@@ -57,6 +57,10 @@ This project is develop for demonstration of working system for Data Structure a
 ### Technology
 ![C++](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 
+### Contributors
+- Nyebe
+- RLA
+
 <div align="right">(<a href="#readme-top">back to top</a>)</div>
 
 ---
