@@ -13,7 +13,7 @@
 
 <br />
 
-![](https://visit-counter.vercel.app/counter.png?page=zyx-0314/AD_ET-Module)
+![](https://visit-counter.vercel.app/counter.png?page=zyx-0314/Employee-Management-System)
 
 ---
 
