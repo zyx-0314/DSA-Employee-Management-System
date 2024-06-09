@@ -15,20 +15,23 @@ class StackEmployee {
 protected:
     struct EmployeeNode;
     struct Employee;
+
+    EmployeeNode*& AddNewEmployee(PersonneInformation&, EmployeeNode*&);
+
+    bool ViewEmployeeList(EmployeeNode*&);
+
+private:
     struct Benefit;
     struct BenefitNode;
-
-    EmployeeNode* employeeTail;
 
     void MainMenu(int&);
     void UpdateMenu(int&);
     void BenefitUpdateMenu(int&);
 
     BenefitNode* AddBenefit();
-    void AddEmployeeInformation(EmployeeNode*&);
+    //void AddEmployeeInformation(EmployeeNode*&);
 
     void ViewBenefits(BenefitNode*&);
-    void ViewEmployeeList(EmployeeNode*&);
     void ViewSpecificEmployee(EmployeeNode*&);
     void ViewEmployeeListAndSpecific(EmployeeNode*&);
 
@@ -42,10 +45,9 @@ protected:
     string StringInputCatcher(string, string = "");
 
 public:
-    EmployeeNode*& GetLinkedList();
+    EmployeeNode* employeeTail = nullptr;
 
-    StackEmployee();
-    void StartPoint();
+    EmployeeNode*& StartPoint(EmployeeNode*&);
 };
 
 #endif

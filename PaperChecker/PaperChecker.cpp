@@ -12,8 +12,11 @@ int main() {
     StackEmployee stackEmployee;
     StackSchedule stackSchedule;
 
+    stackEmployee.employeeTail = nullptr;
+
     int choice;
     do {
+        cout << stackEmployee.employeeTail << '\n';
         cout << "=============================================================\n";
         cout << "\t\t  Hotel Management System \n";
         cout << "=============================================================\n";
@@ -29,13 +32,13 @@ int main() {
             case 0:
                 exit(0);
             case 1:
-                stackEmployee.StartPoint();
+                stackEmployee.StartPoint(stackEmployee.employeeTail);
                 break;
             case 2:
-                stackApplicant.StartPoint();
+                stackEmployee.employeeTail = stackApplicant.StartPoint(stackEmployee.employeeTail);
                 break;
             case 3:
-                stackSchedule.StartPoint(stackEmployee.GetLinkedList());
+                stackSchedule.StartPoint(stackEmployee.employeeTail);
                 break;
             default:
                 cout << "Invalid choice. Please choose a valid option.\n";

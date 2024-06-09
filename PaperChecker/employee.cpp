@@ -21,26 +21,22 @@ struct StackEmployee::BenefitNode {
 	Benefit data;
 };
 
-StackEmployee::StackEmployee() : employeeTail(nullptr) {}
-
-void StackEmployee::StartPoint() {
+StackEmployee::EmployeeNode*& StackEmployee::StartPoint(EmployeeNode*& tail) {
+	employeeTail = tail;
 	int choice;
 
 	do {
 		MainMenu(choice);
 		switch (choice) {
 		case 0:
-			return;
+			return employeeTail;
 		case 1:
-			AddEmployeeInformation(employeeTail);
-			break;
-		case 2:
 			ViewEmployeeListAndSpecific(employeeTail);
 			break;
-		case 3:
+		case 2:
 			UpdateEmployeeInformation(employeeTail);
 			break;
-		case 4:
+		case 3:
 			DeleteEmployeeInformation(employeeTail);
 			break;
 		default:
@@ -51,19 +47,14 @@ void StackEmployee::StartPoint() {
 	} while (0 != choice);
 }
 
-StackEmployee::EmployeeNode*& StackEmployee::GetLinkedList() {
-	return employeeTail;
-}
-
 void StackEmployee::MainMenu(int& choice) {
 	do {
 		layer;
 		cout << "\t\t  Employee's Information\n";
 		layer;
-		cout << "\t1. Create Employee's Information\n";
-		cout << "\t2. View Employee's Information\n";
-		cout << "\t3. Update Employee's Information\n";
-		cout << "\t4. Delete Employee's Information\n";
+		cout << "\t1. View Employee's Information\n";
+		cout << "\t2. Update Employee's Information\n";
+		cout << "\t3. Delete Employee's Information\n";
 		cout << "\t0. Return to Main Menu\n";
 		layer;
 		cin >> choice;
@@ -120,33 +111,54 @@ void StackEmployee::UpdateMenu(int& choice) {
 	system("cls");
 }
 
-void StackEmployee::AddEmployeeInformation(EmployeeNode*& employeeTail) {
+// Obsolete Code
+//void StackEmployee::AddEmployeeInformation(EmployeeNode*& employeeTail) {
+//	EmployeeNode* temp = new EmployeeNode;
+//	temp->data.benefitList = new BenefitNode;
+//
+//	cout << "Enter Employee's Full Name: ";
+//	cin.ignore();
+//	getline(cin, temp->data.fullName);
+//	cout << "Enter Employee ID No.: ";
+//	cin >> temp->data.ID;
+//	cout << "Enter Employee's Gender: ";
+//	cin >> temp->data.gender;
+//	cout << "Enter Employee's Age: ";
+//	cin >> temp->data.age;
+//	cin.ignore();
+//	cout << "Enter Employee's Birthday: ";
+//	getline(cin, temp->data.dob);
+//	cout << "Enter Employee's Contact Number: ";
+//	cin >> temp->data.contactNum;
+//	cin.ignore();
+//	cout << "Enter Employee's Email: ";
+//	getline(cin, temp->data.email);
+//	cout << "Enter Job Role: ";
+//	getline(cin, temp->data.jobRole);
+//	temp->data.benefitList = AddBenefit();
+//
+//	temp->next = employeeTail;
+//	employeeTail = temp;
+//}
+
+StackEmployee::EmployeeNode*& StackEmployee::AddNewEmployee(PersonneInformation& newEmployee, EmployeeNode*& employeeList) {
 	EmployeeNode* temp = new EmployeeNode;
 	temp->data.benefitList = new BenefitNode;
 
-	cout << "Enter Employee's Full Name: ";
-	cin.ignore();
-	getline(cin, temp->data.fullName);
-	cout << "Enter Employee ID No.: ";
-	cin >> temp->data.ID;
-	cout << "Enter Employee's Gender: ";
-	cin >> temp->data.gender;
-	cout << "Enter Employee's Age: ";
-	cin >> temp->data.age;
-	cin.ignore();
-	cout << "Enter Employee's Birthday: ";
-	getline(cin, temp->data.dob);
-	cout << "Enter Employee's Contact Number: ";
-	cin >> temp->data.contactNum;
-	cin.ignore();
-	cout << "Enter Employee's Email: ";
-	getline(cin, temp->data.email);
-	cout << "Enter Job Role: ";
-	getline(cin, temp->data.jobRole);
+	temp->data.fullName = newEmployee.fullName;
+	temp->data.age = newEmployee.age;
+	temp->data.contactNum = newEmployee.contactNum;
+	temp->data.dob = newEmployee.dob;
+	temp->data.email = newEmployee.email;
+	temp->data.gender = newEmployee.gender;
+
+	temp->data.ID = StringInputCatcher("Employee ID No.");
 	temp->data.benefitList = AddBenefit();
 
-	temp->next = employeeTail;
-	employeeTail = temp;
+	temp->next = employeeList;
+	employeeList = temp;
+
+	return employeeList;
 }
 
 StackEmployee::BenefitNode* StackEmployee::AddBenefit() {
@@ -191,6 +203,7 @@ void StackEmployee::ViewSpecificEmployee(EmployeeNode*& temp) {
 	cout << "Email: " << temp->data.email << "\n";
 	cout << "Job Role: " << temp->data.jobRole << "\n";
 	ViewBenefits(temp->data.benefitList);
+	layer;
 
 	system("pause");
 	system("cls");
@@ -216,11 +229,13 @@ void StackEmployee::ViewBenefits(BenefitNode*& List) {
 }
 
 void StackEmployee::ViewEmployeeListAndSpecific(EmployeeNode*& employeeTail) {
+	bool listExist;
 	string selected;
-	EmployeeNode* prev = nullptr;
-	EmployeeNode* temp = employeeTail;
+	EmployeeNode* prev = nullptr,* temp = employeeTail;
 
-	ViewEmployeeList(employeeTail);
+	listExist = ViewEmployeeList(employeeTail);
+
+	if (!listExist) return;
 
 	cout << "- enter x to exit -\n";
 	cout << "Select ID to Check: ";
@@ -249,7 +264,7 @@ void StackEmployee::ViewEmployeeListAndSpecific(EmployeeNode*& employeeTail) {
 	ViewSpecificEmployee(temp);
 }
 
-void StackEmployee::ViewEmployeeList(EmployeeNode*& employeeTail) {
+bool StackEmployee::ViewEmployeeList(EmployeeNode*& employeeTail) {
 	EmployeeNode* temp = employeeTail;
 
 	if (temp) {
@@ -259,9 +274,14 @@ void StackEmployee::ViewEmployeeList(EmployeeNode*& employeeTail) {
 			cout << "Employee ID: " << temp->data.ID << "\n";
 			temp = temp->next;
 		} while (temp);
+		layer;
+		return true;
 	}
 	else {
 		cout << "There's no any employee's information.\n";
+		system("pause");
+		system("cls");
+		return false;
 	}
 }
 
@@ -315,7 +335,6 @@ void StackEmployee::DeleteEmployeeInformation(EmployeeNode*& employeeTail) {
 
 void StackEmployee::UpdateBenefit(BenefitNode*& benefitList) {
 	string id;
-	int choice;
 	BenefitNode* temp = benefitList;
 
 	if (nullptr == temp) {
@@ -403,10 +422,9 @@ void StackEmployee::NoticeNothingToDisplay(string prompt, string action) {
 }
 
 string StackEmployee::StringInputCatcher(string prompt, string additional) {
-	string data;
+	string data = "";
 
-	while (!data.length()) {
-		cin.ignore();
+	while (data.length() == 0) {
 		cout << "Enter " << additional << " " << prompt << ": ";
 		getline(cin, data);
 	}

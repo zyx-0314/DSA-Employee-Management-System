@@ -16,8 +16,7 @@ private:
     void UpdateSchedule(ScheduleNode*&);
 
 public:
-    StackSchedule();
-    void StartPoint(EmployeeNode*&);
+    EmployeeNode*& StartPoint(EmployeeNode*&);
 };
 
 #endif

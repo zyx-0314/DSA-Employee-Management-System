@@ -16,9 +16,7 @@ struct StackSchedule::ScheduleNode {
     Schedule data;
 };
 
-StackSchedule::StackSchedule() : scheduleTail(nullptr){}
-
-void StackSchedule::StartPoint(EmployeeNode*& employeeList) {
+StackSchedule::EmployeeNode*& StackSchedule::StartPoint(EmployeeNode*& employeeList) {
     employeeTail = employeeList;
     ScheduleNode* head = nullptr;
     
@@ -28,7 +26,7 @@ void StackSchedule::StartPoint(EmployeeNode*& employeeList) {
         MainMenu(choice);
         switch (choice) {
             case 0:
-                return;
+                return employeeTail;
             case 1:
                 AddSchedule(scheduleTail);
                 break;
@@ -43,9 +41,11 @@ void StackSchedule::StartPoint(EmployeeNode*& employeeList) {
                 break;
         }
     } while (choice != 0);
+
 }
 
 void StackSchedule::MainMenu(int &choice) {
+    cout << employeeTail << '\n';
     cout << "=============================================================\n";
     cout << "\t\t  Employee Schedule Management\n";
     cout << "=============================================================\n";

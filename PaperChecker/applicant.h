@@ -2,6 +2,7 @@
 #define APPLICANT_H
 
 #include "personneInformation.h"
+#include "employee.h"
 
 #include <ctime>
 #include <string>
@@ -12,9 +13,9 @@
 
 using namespace std;
 
-class StackApplicant {
+class StackApplicant : StackEmployee {
 public:
-    void StartPoint();
+    EmployeeNode*& StartPoint(EmployeeNode*&);
 
 private:
     struct Applicant;
@@ -22,25 +23,26 @@ private:
     struct Interview;
     struct InterviewNode;
 
+    EmployeeNode* employeeTail = nullptr;
     ApplicantNode* applicantTail = nullptr;
     InterviewNode* interviewScheduleTail = nullptr;
 
     void MainMenu(int&);
     void UpdateMenu(int&);
 
-    void ViewApplicantList(ApplicantNode*&);
+    bool ViewApplicantList(ApplicantNode*&);
     void ViewSpecificApplicant(ApplicantNode*&);
-    void ViewEmployeeListAndSpecific(ApplicantNode*&);
+    void ViewApplicantListAndSpecific(ApplicantNode*&);
 
     void AddApplicant(ApplicantNode*&);
 
     void UpdateApplicantInformation(ApplicantNode*&);
     void UpdateApplicantStatus(ApplicantNode*&);
 
-    void MoveApplicantToEmployee();
+    void MoveApplicantToEmployee(ApplicantNode*&);
 
     void DeleteApplicantInformationUI(ApplicantNode*&);
-    void DeleteApplicantInformation(ApplicantNode*&);
+    void DeleteApplicantInformation(ApplicantNode*&, bool = true);
 
     void NoticeNothingToDisplay(string, string);
     string StringInputCatcher(string, string = "");

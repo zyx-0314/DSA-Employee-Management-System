@@ -19,14 +19,15 @@ struct StackApplicant::InterviewNode {
 	Interview data;
 };
 
-void StackApplicant::StartPoint() {
+StackApplicant::EmployeeNode*& StackApplicant::StartPoint(EmployeeNode*& employeeList) {
+	employeeTail = employeeList;
 	int choice;
 
 	do {
 		MainMenu(choice);
 		switch (choice) {
 		case 0:
-			return;
+			return employeeTail;
 		case 1:
 			AddApplicant(applicantTail);
 			break;
@@ -39,7 +40,7 @@ void StackApplicant::StartPoint() {
 			UpdateApplicantInformation(applicantTail);
 			break;
 		case 5:
-			ViewApplicantList(applicantTail);
+			ViewApplicantListAndSpecific(applicantTail);
 			break;
 		case 6:
 			DeleteApplicantInformation(applicantTail);
@@ -50,9 +51,12 @@ void StackApplicant::StartPoint() {
 			break;
 		}
 	} while (choice != 0);
+
 }
 
 void StackApplicant::MainMenu(int& choice) {
+	cout << applicantTail << '\n';
+	cout << employeeTail << '\n';
 	layer;
 	cout << "\t\t  Applicant's Information\n";
 	layer;
@@ -96,29 +100,33 @@ void StackApplicant::UpdateMenu(int& choice) {
 void StackApplicant::AddApplicant(ApplicantNode*& tail) {
 	ApplicantNode* temp = new ApplicantNode;
 	time_t now = time(0);
+	struct tm ltm;
+	localtime_s(&ltm, &now);
 
 	if (!tail)
 		temp->next = nullptr;
 	else
 		temp->next = tail;
 
-	cout << "- Applicant Information - ";
+	cout << "- Applicant Information - \n";
 	temp->data.fullName = StringInputCatcher("Full Name");
 	temp->data.ID = StringInputCatcher("Applicant ID No.");
 	temp->data.gender = StringInputCatcher("Gender");
-	cout << "Enter Applicant's Age: ";
+	cout << "Enter  Applicant's Age: ";
 	cin >> temp->data.age;
 	cin.ignore();
 	temp->data.dob = StringInputCatcher("Date of birth");
 	temp->data.contactNum = StringInputCatcher("Contact Number");
 	temp->data.email = StringInputCatcher("Email");
-	temp->data.applicationDate = now;
+	temp->data.applicationDate = to_string(++ltm.tm_mon) + "-" + to_string(ltm.tm_mday) + "-" + to_string(ltm.tm_year + 1900);
 	temp->data.status = "Paper Evaluation";
 
 	tail = temp;
+
+	system("cls");
 }
 
-void StackApplicant::ViewApplicantList(ApplicantNode*& employeeTail) {
+bool StackApplicant::ViewApplicantList(ApplicantNode*& employeeTail) {
 	ApplicantNode* temp = employeeTail;
 
 	if (temp) {
@@ -128,14 +136,20 @@ void StackApplicant::ViewApplicantList(ApplicantNode*& employeeTail) {
 			cout << "Applicant ID: " << temp->data.ID << "\n";
 			temp = temp->next;
 		} while (temp);
+		layer;
+		return true;
 	}
 	else {
 		cout << "There's no any applicant's information.\n";
+		system("pause");
+		system("cls");
+		return false;
 	}
 }
 
 void StackApplicant::ViewSpecificApplicant(ApplicantNode*& temp) {
 	layer;
+	cout << "Status: " << temp->data.status << " - " << temp->data.applicationDate << "\n";
 	cout << "Full Name: " << temp->data.fullName << "\n";
 	cout << "Applicant ID: " << temp->data.ID << "\n";
 	cout << "Gender: " << temp->data.gender << "\n";
@@ -143,17 +157,18 @@ void StackApplicant::ViewSpecificApplicant(ApplicantNode*& temp) {
 	cout << "Birthday: " << temp->data.dob << "\n";
 	cout << "Contact Number: " << temp->data.contactNum << "\n";
 	cout << "Email: " << temp->data.email << "\n";
+	layer;
 
-	system("pause");
-	system("cls");
 }
 
-void StackApplicant::ViewEmployeeListAndSpecific(ApplicantNode*& applicantList) {
+void StackApplicant::ViewApplicantListAndSpecific(ApplicantNode*& applicantList) {
+	bool listExist;
 	string selected;
-	ApplicantNode* prev = nullptr;
-	ApplicantNode* temp = applicantList;
+	ApplicantNode* prev = nullptr,* temp = applicantList;
 
-	ViewApplicantList(applicantList);
+	listExist = ViewApplicantList(applicantList);
+
+	if (!listExist) return;
 
 	cout << "- enter x to exit -\n";
 	cout << "Select ID to Check: ";
@@ -180,6 +195,9 @@ void StackApplicant::ViewEmployeeListAndSpecific(ApplicantNode*& applicantList) 
 	system("cls");
 
 	ViewSpecificApplicant(temp);
+
+	system("pause");
+	system("cls");
 }
 
 void StackApplicant::DeleteApplicantInformationUI(ApplicantNode*& tail) {
@@ -219,7 +237,7 @@ void StackApplicant::DeleteApplicantInformationUI(ApplicantNode*& tail) {
 	}
 }
 
-void StackApplicant::DeleteApplicantInformation(ApplicantNode*& temp) {
+void StackApplicant::DeleteApplicantInformation(ApplicantNode*& temp, bool deleteNode) {
 	ApplicantNode* prev = nullptr;
 
 	if (prev == nullptr) {
@@ -228,7 +246,7 @@ void StackApplicant::DeleteApplicantInformation(ApplicantNode*& temp) {
 	else {
 		prev->next = temp->next;
 	}
-	delete temp;
+	if (deleteNode) delete temp;
 	cout << "Applicant deleted.\n";
 }
 
@@ -245,7 +263,7 @@ void StackApplicant::UpdateApplicantInformation(ApplicantNode*& applicantTail) {
 	this->ViewApplicantList(applicantTail);
 
 	id = StringInputCatcher("Applicant ID No. to update");
-
+	system("cls");
 
 	while (nullptr != temp && id != temp->data.ID) {
 		temp = temp->next;
@@ -257,8 +275,11 @@ void StackApplicant::UpdateApplicantInformation(ApplicantNode*& applicantTail) {
 	}
 
 	do {
+		ViewSpecificApplicant(temp);
 		UpdateMenu(choice);
+		system("cls");
 
+		ViewSpecificApplicant(temp);
 		layer;
 		switch (choice) {
 		case 1:
@@ -281,6 +302,7 @@ void StackApplicant::UpdateApplicantInformation(ApplicantNode*& applicantTail) {
 			temp->data.email = StringInputCatcher("Email", "new");
 			break;
 		case 0:
+			system("cls");
 			return;
 		default:
 			cout << "Invalid choice. Please choose a valid option.\n";
@@ -293,7 +315,6 @@ void StackApplicant::UpdateApplicantInformation(ApplicantNode*& applicantTail) {
 
 void StackApplicant::UpdateApplicantStatus(ApplicantNode*&) {
 	string id;
-	int choice;
 	ApplicantNode* temp = applicantTail;
 
 	if (nullptr == applicantTail) {
@@ -303,8 +324,8 @@ void StackApplicant::UpdateApplicantStatus(ApplicantNode*&) {
 
 	this->ViewApplicantList(applicantTail);
 
-	cout << "Enter Applicant ID No. to update: ";
-	cin >> id;
+	id = StringInputCatcher("Applicant ID No. to update");
+	system("cls");
 
 	while (nullptr != temp && id != temp->data.ID) {
 		temp = temp->next;
@@ -315,13 +336,19 @@ void StackApplicant::UpdateApplicantStatus(ApplicantNode*&) {
 		return;
 	}
 
+	ViewSpecificApplicant(temp);
 	temp->data.status = StringInputCatcher("Status", "new");
 
 	if (temp->data.status == "Hired") {
-		// Move applicant data
-		DeleteApplicantInformation(temp);
+		MoveApplicantToEmployee(temp);
+		DeleteApplicantInformation(temp, false);
+
+
+		return;
 	}
 	cout << "Applicant information updated.\n";
+	system("pause");
+	system("cls");
 }
 
 void StackApplicant::NoticeNothingToDisplay(string prompt, string action) {
@@ -331,13 +358,25 @@ void StackApplicant::NoticeNothingToDisplay(string prompt, string action) {
 }
 
 string StackApplicant::StringInputCatcher(string prompt, string additional) {
-	string data;
+	string data = "";
 
-	while (!data.length()) {
-		cin.ignore();
+	while (data.length() == 0) {
 		cout << "Enter " << additional << " " << prompt << ": ";
 		getline(cin, data);
 	}
 
 	return data;
+}
+
+void StackApplicant::MoveApplicantToEmployee(ApplicantNode*& newHired) {
+	PersonneInformation temp;
+	
+	temp.fullName = newHired->data.fullName;
+	temp.age = newHired->data.age;
+	temp.contactNum = newHired->data.contactNum;
+	temp.dob = newHired->data.dob;
+	temp.email = newHired->data.email;
+	temp.gender = newHired->data.gender;
+
+	employeeTail = AddNewEmployee(temp, employeeTail);
 }
