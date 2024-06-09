@@ -128,8 +128,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="applicant.cpp" />
+    <ClCompile Include="Employee Management System.cpp" />
     <ClCompile Include="employee.cpp" />
-    <ClCompile Include="PaperChecker.cpp" />
     <ClCompile Include="schedule.cpp" />
   </ItemGroup>
   <ItemGroup>

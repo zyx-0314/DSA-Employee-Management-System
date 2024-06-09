@@ -55,8 +55,6 @@ StackApplicant::EmployeeNode*& StackApplicant::StartPoint(EmployeeNode*& employe
 }
 
 void StackApplicant::MainMenu(int& choice) {
-	cout << applicantTail << '\n';
-	cout << employeeTail << '\n';
 	layer;
 	cout << "\t\t  Applicant's Information\n";
 	layer;

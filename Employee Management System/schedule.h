@@ -3,6 +3,8 @@
 
 #include "employee.h"
 
+#define layer cout << "============================================================= \n"
+
 class StackSchedule : StackEmployee {
 private:
     struct ScheduleNode;

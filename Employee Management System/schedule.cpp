@@ -45,15 +45,14 @@ StackSchedule::EmployeeNode*& StackSchedule::StartPoint(EmployeeNode*& employeeL
 }
 
 void StackSchedule::MainMenu(int &choice) {
-    cout << employeeTail << '\n';
-    cout << "=============================================================\n";
+    layer;
     cout << "\t\t  Employee Schedule Management\n";
-    cout << "=============================================================\n";
+    layer;
     cout << "\t1. Add Employee Schedule\n";
     cout << "\t2. View Employee Schedules\n";
     cout << "\t3. Update Employee Schedule\n";
     cout << "\t0. Exit\n";
-    cout << "-------------------------------------------------------------\n";
+    layer;
     cin >> choice;
     cin.ignore();
 }
@@ -88,7 +87,7 @@ void StackSchedule::ViewSchedules(ScheduleNode*& head) {
     
     ScheduleNode* temp = head;
     while (temp) {
-        cout << "=============================================================\n";
+        layer;
         cout << "Employee ID: " << temp->data.employeeId << "\n";
         cout << "Job Role: " << temp->data.jobRole << "\n";
         cout << "Schedule Date: " << temp->data.scheduleDate << "\n";
@@ -120,13 +119,13 @@ void StackSchedule::UpdateSchedule(ScheduleNode*& head) {
     
     int choice;
     do {
-        cout << "=============================================================\n";
+        layer;
         cout << "Select the field to update:\n";
         cout << "1. Job Role\n";
         cout << "2. Schedule Date\n";
         cout << "3. Shift\n";
         cout << "0. Exit\n";
-        cout << "-------------------------------------------------------------\n";
+        layer;
         cin >> choice;
         cin.ignore();
 

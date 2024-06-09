@@ -5,6 +5,8 @@
 #include <iostream>
 #include <cstdlib>
 
+#define layer cout << "============================================================= \n"
+
 using namespace std;
 
 int main() {
@@ -16,10 +18,9 @@ int main() {
 
     int choice;
     do {
-        cout << stackEmployee.employeeTail << '\n';
-        cout << "=============================================================\n";
+        layer;
         cout << "\t\t  Hotel Management System \n";
-        cout << "=============================================================\n";
+        layer;
         cout << "\t1. Employee Information Management\n";
         cout << "\t2. Applicant Information Management\n";
         cout << "\t3. Employee Schedule Management\n";
